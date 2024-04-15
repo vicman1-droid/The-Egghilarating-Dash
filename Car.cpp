@@ -127,7 +127,7 @@ void Car::Draw()
 void Car::Move()
 {
 	if (currentDirection == DIR_LEFT)
-		m_pSprite->mPosition.x -= 0.2;
+		m_pSprite->mPosition.x -= 0.05;
 	if (currentDirection == DIR_RIGHT)
-		m_pSprite->mPosition.x += 0.2;
+		m_pSprite->mPosition.x += 0.05;
 }
