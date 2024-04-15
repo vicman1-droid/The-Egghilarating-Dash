@@ -57,7 +57,7 @@ void NormalSpawner::Delete(std::vector<Enemy*>::iterator& it)
 
 bool NormalSpawner::CheckEntitiesWithinLimit()
 {
-	if (enemyList.size() <= 10)
+	if (enemyList.size() <= 3)
 		return true;
 	else
 		return false;

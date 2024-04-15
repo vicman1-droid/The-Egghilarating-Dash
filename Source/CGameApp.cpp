@@ -374,23 +374,18 @@ void CGameApp::FrameAdvance()
 
 	} // End if Frame Rate Altered
 
-	/*
 
-	if (spawner->GetEnemyList().size() != 0)
-	{
 		for (auto it = spawner->GetEnemyList().begin(); it != spawner->GetEnemyList().end();)
 		{
-			if ((*it)->Position().x > 800 || (*it)->Position().x < 0)
+			if ((*it)->Position().x > 900 || (*it)->Position().x < -100)
 			{
 				delete* it;
-				it = spawner->GetEnemyList().erase(it);
-
+				spawner->Delete(it);
+				
 			}
 			else
 				it++;
 		}
-	}
-	*/
 
 
 
