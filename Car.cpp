@@ -51,18 +51,18 @@ Vec2& Car::Position()
 
 bool Car::amIColliding(Sprite* otherSprite)
 {
-	/*
-	if (this->m_pSprite->mPosition.x + this->m_pSprite->width() >= otherSprite->mPosition.x &&
-		this->m_pSprite->mPosition.x <= otherSprite->width() + otherSprite->mPosition.x &&
+	
+	if (this->m_pSprite->mPosition.x + this->m_pSprite->width()/2 >= otherSprite->mPosition.x &&
+		this->m_pSprite->mPosition.x <= (otherSprite->width() + 30) + otherSprite->mPosition.x &&
 		this->m_pSprite->mPosition.y + this->m_pSprite->height() >= otherSprite->mPosition.y &&
 		this->m_pSprite->mPosition.y <= otherSprite->height() + otherSprite->mPosition.y
 		)
 	{
 		return true;
 	}
-	else return false;*/
+	else return false;
 
-	
+	/*
 	// collision x-axis?
 	bool collisionX = this->m_pSprite->mPosition.x + this->m_pSprite->width() >= otherSprite->mPosition.x &&
 		otherSprite->mPosition.x + otherSprite->width() >= this->m_pSprite->mPosition.x;
@@ -71,7 +71,7 @@ bool Car::amIColliding(Sprite* otherSprite)
 		otherSprite->mPosition.y + otherSprite->height() >= this->m_pSprite->mPosition.y;
 	// collision only if on both axes
 	return collisionX && collisionY;
-
+*/
 	/*
 	int aleft, aright, abottom, atop;
 	int bleft, bright, bbottom, btop;
@@ -127,7 +127,7 @@ void Car::Draw()
 void Car::Move()
 {
 	if (currentDirection == DIR_LEFT)
-		m_pSprite->mPosition.x -= 0.05;
+		m_pSprite->mPosition.x -= 0.2;
 	if (currentDirection == DIR_RIGHT)
-		m_pSprite->mPosition.x += 0.05;
+		m_pSprite->mPosition.x += 0.2;
 }
