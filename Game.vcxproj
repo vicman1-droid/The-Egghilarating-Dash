@@ -19,13 +19,13 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -151,8 +151,14 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bulldozer.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Car.cpp" />
+    <ClCompile Include="CollectibleInterface.cpp" />
+    <ClCompile Include="Invulnerability.cpp" />
+    <ClCompile Include="LifePack.cpp" />
     <ClCompile Include="NormalSpawner.cpp" />
+    <ClCompile Include="ScoreMultiplier.cpp" />
     <ClCompile Include="Source\BackBuffer.cpp" />
     <ClCompile Include="Source\CGameApp.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -176,9 +182,13 @@
     <ClCompile Include="Source\Sprite.cpp" />
     <ClCompile Include="Source\Vec2.cpp" />
     <ClCompile Include="SpawnerControlInterface.cpp" />
+    <ClCompile Include="Truck.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bulldozer.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Car.h" />
+    <ClInclude Include="CollectibleInterface.h" />
     <ClInclude Include="Includes\BackBuffer.h" />
     <ClInclude Include="Includes\CGameApp.h" />
     <ClInclude Include="Includes\CPlayer.h" />
@@ -190,9 +200,13 @@
     <ClInclude Include="Includes\ResizeEngine.h" />
     <ClInclude Include="Includes\Sprite.h" />
     <ClInclude Include="Includes\Vec2.h" />
+    <ClInclude Include="Invulnerability.h" />
+    <ClInclude Include="LifePack.h" />
     <ClInclude Include="NormalSpawner.h" />
     <ClInclude Include="Res\resource.h" />
+    <ClInclude Include="ScoreMultiplier.h" />
     <ClInclude Include="SpawnerControlInterface.h" />
+    <ClInclude Include="Truck.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Res\directx.ico" />

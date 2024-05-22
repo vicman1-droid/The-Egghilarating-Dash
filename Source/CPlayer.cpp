@@ -170,3 +170,8 @@ void CPlayer::takeDamage(int dmg)
 	else
 		return;
 }
+
+void CPlayer::Heal()
+{
+	this->life++;
+}

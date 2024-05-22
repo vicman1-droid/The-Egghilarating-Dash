@@ -11,8 +11,11 @@
 //-----------------------------------------------------------------------------
 #include "CGameApp.h"
 
-using namespace std;
+#include <thread>
+#include <chrono>
 
+using namespace std;
+ 
 extern HINSTANCE g_hInst;
 
 //-----------------------------------------------------------------------------
@@ -261,6 +264,14 @@ LRESULT CGameApp::DisplayWndProc( HWND hWnd, UINT Message, WPARAM wParam, LPARAM
 				fTimer = SetTimer(m_hWnd, 1, 250, NULL);
 				m_pPlayer->Explode();
 				break;
+
+			case VK_SPACE:
+			{
+				Bullet* b = new Bullet(m_pBBuffer);
+				b->Position() = m_pPlayer->Position();
+				blist.push_back(b);
+				break;
+			}
 			}
 			break;
 
@@ -320,7 +331,13 @@ void CGameApp::SetupGameState()
 	//spawner->Spawn(m_pBBuffer);
 	//spawner->Spawn(m_pBBuffer);
 
+	PlaySound(TEXT("data/nokia_arabian.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+
 	m_pPlayer->Position() = Vec2(400, 550);
+
+	int* pscore = &score;
+	int* pinvulnerable = &invulnerable;
+	spawner = new NormalSpawner(m_pPlayer, pscore,pinvulnerable);
 	//enemyList[0]->Position() = Vec2(400, 150);
 	//enemyList[1]->Position() = Vec2(400, 350);
 	//enemyList[2]->Position() = Vec2(400, 250);
@@ -369,7 +386,7 @@ void CGameApp::FrameAdvance()
 	if ( m_LastFrameRate != m_Timer.GetFrameRate() )
 	{
 		m_LastFrameRate = m_Timer.GetFrameRate( FrameRate, 50 );
-		sprintf_s( TitleBuffer, _T("Game : %s   Lives: %d"), FrameRate, m_pPlayer->getLives() );
+		sprintf_s( TitleBuffer, _T("Game : %s   Lives: %d    Score: %d"), FrameRate, m_pPlayer->getLives(), score);
 		SetWindowText( m_hWnd, TitleBuffer );
 
 	} // End if Frame Rate Altered
@@ -387,7 +404,17 @@ void CGameApp::FrameAdvance()
 				it++;
 		}
 
+		for (auto it = blist.begin(); it != blist.end();)
+		{
+			if ((*it)->Position().y < 0)
+			{
+				delete* it;
+				it = blist.erase(it);
 
+			}
+			else
+				it++;
+		}
 
 	// Poll & Process input devices
 
@@ -449,14 +476,34 @@ void CGameApp::ProcessInput( )
 void CGameApp::AnimateObjects()
 {
 	m_pPlayer->Update(m_Timer.GetTimeElapsed());
+
+	for (auto i : spawner->GetEnemyList())
+	{
+		for (auto j : blist)
+		{
+			if (i->amIColliding(j->Spr()))
+			{
+				auto position = std::find(spawner->GetEnemyList().begin(), spawner->GetEnemyList().end(), i);
+				spawner->GetEnemyList().erase(position);
+				i--;
+
+				auto pos = std::find(blist.begin(), blist.end(), j);
+				blist.erase(pos);
+				j--;
+			}
+		}
+	}
 }
 
 //-----------------------------------------------------------------------------
 // Name : DrawObjects () (Private)
 // Desc : Draws the game objects
 //-----------------------------------------------------------------------------
+
 void CGameApp::DrawObjects()
 {
+	//PlaySound("data/nokia_arabian.wav", NULL, SND_FILENAME | SND_LOOP);
+
 	m_pBBuffer->reset();
 
 	m_imgBackground.Paint(m_pBBuffer->getDC(), 0, 0);
@@ -466,12 +513,20 @@ void CGameApp::DrawObjects()
 	if (spawner->CheckEntitiesWithinLimit())
 		spawner->Spawn(m_pBBuffer);
 
+	if (spawner->CheckCollectiblesWithinLimit())
+		spawner->SpawnCollectible(m_pBBuffer);
+
+	for (auto it : blist)
+	{
+		it->Draw();
+		it++;
+	}
 	
 	for (auto it = spawner->GetEnemyList().begin(); it != spawner->GetEnemyList().end();)
 	{
 		(*it)->Draw();
 
-		if ((*it)->amIColliding(m_pPlayer->getSprite()))
+		if ((*it)->amIColliding(m_pPlayer->getSprite()) && invulnerable == 0)
 		{
 			m_pPlayer->takeDamage(1);
 			spawner->Delete(it);
@@ -481,5 +536,41 @@ void CGameApp::DrawObjects()
 
 	}
 
+	for (auto cit = spawner->GetCollectibleList().begin(); cit != spawner->GetCollectibleList().end();)
+	{
+		(*cit)->Draw();
+
+		if ((*cit)->amIColliding(m_pPlayer->getSprite()))
+		{
+			(*cit)->doEvent();
+			spawner->DeleteCollectible(cit);
+		}
+		else
+			cit++;
+
+	}
+
+	if (m_pPlayer->Position().y < 0)
+	{ 
+		m_pPlayer->Position() = Vec2(400, 550);
+		score += 100;
+		invulnerable = 0;
+		if (background == 0)
+		{
+			m_imgBackground.LoadBitmapFromFile("data/nextRoad.bmp", GetDC(m_hWnd));
+			background = 1;
+			spawner->DeleteEverything();
+
+			
+		}
+		else if (background == 1)
+		{
+			m_imgBackground.LoadBitmapFromFile("data/road.bmp", GetDC(m_hWnd));
+			background = 0;
+			spawner->DeleteEverything();
+
+		}
+		
+	}
 	m_pBBuffer->present();
 }

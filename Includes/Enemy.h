@@ -1,6 +1,13 @@
 #pragma once
 #include "CPlayer.h"
 #include "Vec2.h"
+
+enum DIRECTION
+{
+	DIR_LEFT = 0,
+	DIR_RIGHT = 1,
+};
+
 class Enemy
 {
 public:

@@ -2,12 +2,6 @@
 #include "Enemy.h"
 
 
-enum DIRECTION
-{
-    DIR_LEFT = 0,
-    DIR_RIGHT = 1,
-};
-
 class Car : public Enemy
 {
 private:

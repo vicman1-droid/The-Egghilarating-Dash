@@ -60,7 +60,8 @@ public:
 	Sprite*&				getSprite() { return m_pSprite; };
 
 	void					takeDamage(int dmg);
-	int						getLives() { return life; };
+	int&						getLives() { return life; };
+	void					Heal();
 
 
 

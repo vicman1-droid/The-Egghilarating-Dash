@@ -24,6 +24,7 @@
 #include "Enemy.h"
 #include "../SpawnerControlInterface.h"
 #include "../NormalSpawner.h"
+#include "../Bullet.h"
 
 //-----------------------------------------------------------------------------
 // Forward Declarations
@@ -98,7 +99,13 @@ private:
 	BackBuffer*				m_pBBuffer;
 	CPlayer*				m_pPlayer;
 
-	SpawnerControlInterface* spawner = new NormalSpawner();
+	SpawnerControlInterface* spawner;
+
+	int score = 0;
+	int background = 0;
+	int invulnerable = 0;
+
+	std::vector<Bullet*> blist;
 };
 
 #endif // _CGAMEAPP_H_
